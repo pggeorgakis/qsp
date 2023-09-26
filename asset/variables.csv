@@ -1,0 +1,101 @@
+,Old name,New name
+0,Sample recorded at,Datetime
+1,Sample name,Sample name
+2,Cement name,Product Type
+3,Created at,Created at
+4,Plant,Plant
+5,Sample site,Source
+6,Notes,Notes
+7,Strength 1 Day,1 Day
+8,Strength 1 Day Pred.,1 Day Pred.
+9,Strength 3 Day,3 Day
+10,Strength 7 Day,7 Day
+11,Strength 7 Day Pred.,7 Day Pred.
+12,Strength 28 Day,28 Day
+13,Strength 28 Day Pred.,28 Day Pred.
+14,325 Mesh Pass,325 Mesh Pass
+15,325 Mesh Pass Target RAW,325 Mesh Pass Target RAW
+16,325 Mesh Pass Target,325 Mesh Pass Target
+17,325 Mesh Pass Target unbounded,325 Mesh Pass Target unbounded
+18,Blaine,Blaine
+19,Air Cont.,Air Cont.
+20,CO2 Loss,CO2 Loss
+21,LOI @ 950Β°C,LOI @ 950Β°C
+22,LOI @ 550Β°C,LOI @ 550Β°C
+23,Limestone (Ignition Loss Computed),Limestone (Ignition Loss Computed)
+24,FCaO (Wet),FCaO (Wet)
+25,Final Set Time,Final Set Time
+26,Initial Set Time,Initial Set Time
+27,FSP,FSP
+28,Strength Cube Flow,Strength Cube Flow
+29,Al2O3,Al2O3
+30,CaO,CaO
+31,Fe2O3,Fe2O3
+32,K2O,K2O
+33,MgO,MgO
+34,Na2O,Na2O
+35,SiO2,SiO2
+36,SO3 (XRF),SO3
+37,C2S (XRF Computed),C2S (XRF Computed)
+38,C3A (XRF Computed),C3A (XRF Computed)
+39,C3S (XRF Computed),C3S (XRF Computed)
+40,C4AF (XRF Computed),C4AF (XRF Computed)
+41,Albite,Albite
+42,Andesine,Andesine
+43,Anhydrite,Anhydrite
+44,Anorthite,Anorthite
+45,Aphthitalite,Aphthitalite
+46,Arcanite,Arcanite
+47,HemiHydrate,HemiHydrate
+48,Belite Alpha,Belite Alpha
+49,Belite AlphaH,Belite AlphaH
+50,Belite Beta,Belite Beta
+51,Belite Gamma,Belite Gamma
+52,Belite Sum,Belite Sum
+53,Alum Cubic,Alum Cubic
+54,Alum Mono,Alum Mono
+55,Alum Ortho,Alum Ortho
+56,Alum Sum,Alum Sum
+57,Alite M1,Alite M1
+58,Alite M3,Alite M3
+59,Fraction M1,Fraction M1
+60,Alite Sum,Alite Sum
+61,Ferrite,Ferrite
+62,Calcite,Calcite
+63,Dolomite,Dolomite
+64,Feldspar Sum,Feldspar Sum
+65,Gypsum,Gypsum
+66,Illite,Illite
+67,K-Feldspar,K-Feldspar
+68,Langbeinite,Langbeinite
+69,Lime,Lime
+70,Periclase,Periclase
+71,Portlandite,Portlandite
+72,Quartz,Quartz
+73,Syngenite,Syngenite
+74,Thenardite,Thenardite
+75,CO2,CO2
+76,FCaO (XRD),FCaO (XRD)
+77,SO3 (XRD Computed),SO3 (XRD Computed)
+78,D10,D10
+79,D50,D50
+80,D90,D90
+81,Passing 1 Βµm,Passing 1 Βµm
+82,Passing 5 Βµm,Passing 5 Βµm
+83,Passing 10 Βµm,Passing 10 Βµm
+84,Passing 12 Βµm,Passing 12 Βµm
+85,Passing 20 Βµm,Passing 20 Βµm
+86,Passing 25 Βµm,Passing 25 Βµm
+87,Passing 32 Βµm,Passing 32 Βµm
+88,Passing 37 Βµm,Passing 37 Βµm
+89,Passing 44 Βµm,Passing 44 Βµm
+90,Passing 50 Βµm,Passing 50 Βµm
+91,Passing 53 Βµm,Passing 53 Βµm
+92,Passing 63 Βµm,Passing 63 Βµm
+93,Passing 74 Βµm,Passing 74 Βµm
+94,Passing 88 Βµm,Passing 88 Βµm
+95,Passing 100 Βµm,Passing 100 Βµm
+96,Passing 170 Βµm,Passing 170 Βµm
+97,Passing 200 Βµm,Passing 200 Βµm
+98,Passing 325 Βµm,Passing 325 Βµm
+99,Passing 400 Βµm,Passing 400 Βµm

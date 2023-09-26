@@ -1,30 +1,112 @@
-from scipy.optimize import differential_evolution
-from qsp.optimization import objective_function, predict_1_day_strength, optimize
-import joblib
+import warnings
+import streamlit as st
+import pandas as pd
+from qsp.core import read_data, filter_data, load_models, select_inputs, replace_zeros
+from qsp.optimization import optimize, get_strength_predictions
+from qsp.plotting import plot_mesh_pass_plotly, plot_strength_plotly, combined_plot
 
 
-features = ['Source', 'Product Type', 'CO2', 'Belite Sum', 'Alite Sum', 'Quartz', 'Gypsum', 'MgO', '325 Mesh Pass', 'D50', 'HemiHydrate', 'CaO', 'D90', 'Fe2O3', 'SO3', 'Alite M1', 'Al2O3', 'Arcanite', 'Blaine', 'K2O', 'Na2O', 'Belite Beta', 'D10', 'Aphthitalite', 'Belite Alpha', 'Belite Gamma', 'Alum Cubic', 'Alum Ortho', 'Alum Sum', 'Alite M3', 'Ferrite', 'Calcite', 'Langbeinite', 'Lime', 'Periclase', 'Portlandite', 'Fraction M1', 'SiO2']
-inputs = data[features].iloc[0, :]
-model = joblib.load(r"C:\Users\p.georgakis\Downloads\Alcemy_ExtraTrees_(38 inputs)_v0.cls")
-target_1_day_strength = 2200
-bounds = [(97, 99)]
-# Perform differential evolution optimization
-result = differential_evolution(objective_function, 
-                                bounds=bounds,
-                                args=(target_1_day_strength, inputs, model))
 
-# Extract the optimized value for "325 Mesh Pass"
-optimized_325_mesh_pass = result.x[0]
-optimized_325_mesh_pass = round(optimized_325_mesh_pass, 1)
+warnings.filterwarnings("ignore", category=UserWarning)
 
-print("Optimized 325 Mesh Pass value:", optimized_325_mesh_pass)
+st.set_page_config(page_title="Quality Target Optimization v0.5", 
+                   page_icon=":dart:", 
+                   layout="wide")
 
-predicted_1_day_strength = predict_1_day_strength(mesh_pass=optimized_325_mesh_pass, inputs=inputs, model=model)
-predicted_1_day_strength = round(predicted_1_day_strength, 1)
+# Title
+st.title("Quality Target Optimization")
 
-print("Predicted 1 Day Strength for Optimized 325 Mesh Pass:", predicted_1_day_strength, 'psi')
+# Read data and load models at the beginning
+data = read_data()
+models = load_models()
+# Define Source and Product Type options
+# FIXME: Check types
+source_options = {'FM3': 0, 'FM4': 1, 'FM6': 2}
+product_type_options = {'GU': 0, 'I/II': 1, 'CEM IL': 2, 'Masonry': 3, 'Stucco': 4}
 
-optimized_values = optimize(data=data[features][:5],
-                            bounds=bounds, 
-                            target_1_day_strength=target_1_day_strength, 
-                            model=model)
+# Set default start and end dates to the first and last values of the data
+default_start_date = pd.to_datetime(data.index.min())
+default_end_date = pd.to_datetime(data.index.max())
+
+st.sidebar.header("Select Options")
+
+# Select Source and Product Type
+product_type = st.sidebar.selectbox("Recipe", list(product_type_options.keys()), index=2)
+source = st.sidebar.selectbox("Sample site", list(source_options.keys()))
+
+# Input for setting the target 1-day strength
+target_1_day_strength = st.sidebar.number_input("Target 1-Day Strength", value=2200)
+
+# Create a sidebar column layout for the date pickers
+date_col1, date_col2 = st.sidebar.columns(2)
+# Date Picker for time period with default values
+with date_col1:
+    start_date = st.date_input("Start Date", default_start_date)
+    start_date = pd.to_datetime(start_date)
+
+with date_col2:
+    end_date = st.date_input("End Date", default_end_date)
+    end_date = pd.to_datetime(end_date)
+    
+# Filter data based on Source and Product Type
+source_code = source_options[source]
+product_type_code = product_type_options[product_type]
+
+# Streamlit UI
+def main():
+    data_filtered = filter_data(data, source_code, product_type_code)
+    # Filter data by time period
+    data_filtered = data_filtered[(data_filtered.index >= start_date) & (data_filtered.index <= end_date)]
+
+    data_filtered = data_filtered.iloc[0:3, :]
+    # Select model inputs
+    inputs = select_inputs(data_filtered, models['xrd'])
+
+    
+    # Button to run the optimization
+    if st.sidebar.button("Run Optimization"):
+        optimized_values, predicted_values = run_optimization(inputs, target_1_day_strength)
+    
+        data_filtered['1 Day Strength Pred.'] = predicted_values
+        data_filtered['325 Mesh Pass Optimized'] = optimized_values
+        data_filtered = replace_zeros(data_filtered)
+        
+        # fig1 = plot_strength_plotly(data_filtered)
+        # st.plotly_chart(fig1)
+        
+        # fig2 = plot_mesh_pass_plotly(data_filtered)
+        # st.plotly_chart(fig2)
+        
+        fig = combined_plot(data_filtered)
+        st.plotly_chart(fig)
+        
+        # Show data table
+        st.write(inputs)
+        csv = inputs.to_csv().encode('utf-8')
+
+        st.download_button(
+            label="Download CSV",
+            data=csv,
+            file_name='data.csv',
+            mime='text/csv')
+    
+    
+def run_optimization(inputs, target_1_day_strength):
+
+    # Define 325 Mesh Pass bounds
+    bounds = [(97, 99)]
+
+    # Run optimization using the model trained with XRD data
+    model = models['xrd']
+    optimized_values = optimize(data=inputs,
+                                bounds=bounds, 
+                                target_1_day_strength=target_1_day_strength, 
+                                model=model)
+
+    # Get the Strength 1-Day predictions using the optimized values of 325 Mesh Pass
+    predicted_values = get_strength_predictions(optimized_values, inputs, model)
+    return optimized_values, predicted_values
+
+
+if __name__ == '__main__':
+    main()

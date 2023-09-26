@@ -1,0 +1,13 @@
+{
+    "algorithm": {
+        "strategy": "best1bin",
+        "popsize": 15,
+        "tol": 0.01,
+        "mutation": 0.5,
+        "recombination": 0.7,
+        "maxiter": 1000
+    },
+    "bounds": [
+        {"name": "param1", "lower": 97, "upper": 99}
+    ]
+}
