@@ -1,4 +1,5 @@
 from scipy.optimize import differential_evolution
+import streamlit as st
 
 
 # Define your model function that takes inputs and returns the predicted 28 day strength
@@ -33,6 +34,7 @@ def get_strength_predictions(optimized_values, inputs, model):
         prediction = predict_1_day_strength(mesh_pass=mesh_pass, 
                                             inputs=inputs.iloc[i], 
                                             model=model)
+        
         prediction = round(prediction, 1)
         predicted_values.append(prediction)
     return predicted_values

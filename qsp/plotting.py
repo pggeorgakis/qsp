@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.subplots as sp
 import plotly.graph_objects as go
+import pandas as pd
 
 
 def plot_mesh_pass(data):
@@ -59,6 +60,7 @@ def plot_strength_plotly(data):
 
 
 def combined_plot(data_filtered):
+    data_filtered['Datetime'] = pd.to_datetime(data_filtered['Datetime'])
     # Create a subplot with shared x-axis
     fig = sp.make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1)
 
@@ -70,14 +72,15 @@ def combined_plot(data_filtered):
     
             # Add "325 Mesh Pass" traces to the first subplot
     fig.add_trace(go.Scatter(x=data_filtered['Datetime'], y=data_filtered['325 Mesh Pass'],
-                            mode='lines', name='325 Mesh Pass', line=dict(dash='dash')), row=2, col=1)
+                            mode='lines', name='325 Mesh Pass', line=dict(dash='dash', color='gray')), row=2, col=1)
     fig.add_trace(go.Scatter(x=data_filtered['Datetime'], y=data_filtered['325 Mesh Pass Optimized'],
-                            mode='lines', name='325 Mesh Pass Optimized'), row=2, col=1)
+                            mode='lines', name='325 Mesh Pass Target', line=dict(color='teal')), row=2, col=1)
 
     # Update subplot titles and axis labels
     fig.update_layout(
         title_text="",
-        xaxis2=dict(title="Datetime"),
+        xaxis2=dict(title="Datetime",
+                    tickformat='%B %-d'),
         yaxis1=dict(title="Compressive Strength (PSI)"),
         yaxis2=dict(title="325 Mesh Pass (%)"),
         width=1500,

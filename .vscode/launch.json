@@ -1,21 +1,41 @@
+// {
+//     // Use IntelliSense to learn about possible attributes.
+//     // Hover to view descriptions of existing attributes.
+//     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "name": "Python: Current File",
+//             "type": "python",
+//             "request": "launch",
+//             "program": "${file}",
+//             "justMyCode": false,
+//             "env": {
+//                 "debug_mode": "true",
+//                 "PYTHONPATH": "${workspaceFolder}",
+//                 "app_port": "11600",
+//                 "data_path": "",
+//             }
+//         }
+//     ]
+// }
+
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Streamlit: My App",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "justMyCode": false,
-            "env": {
-                "debug_mode": "true",
-                "PYTHONPATH": "${workspaceFolder}",
-                "app_port": "11600",
-                "data_path": "",
-            }
+            "program": "${workspaceFolder}/app.py",
+            "args": ["run", "${workspaceFolder}/app.py"],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal",
+            "stopOnEntry": false,
+            "showReturnValue": true,
+            "redirectOutput": true,
+            "subProcess": false
         }
     ]
 }

@@ -1,11 +1,14 @@
 import numpy as np
 import pandas as pd
 import joblib
+import streamlit as st
 
 
+@st.cache_data
 def read_data():
     data = pd.read_excel('asset/data/data.xlsx')
     data.index = pd.to_datetime(data['Sample recorded at'])
+    
     variables = pd.read_csv('asset/variables.csv')
 
     # Replace column names based on variables.csv
@@ -47,6 +50,7 @@ def filter_data(data, source, product_type):
     return data
 
 
+@st.cache_resource
 def load_models():
     models = {}
     

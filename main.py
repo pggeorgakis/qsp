@@ -1,5 +1,6 @@
 from art import tprint
 import warnings
+import numpy as np
 from qsp.core import read_data, filter_data, load_models, select_inputs, replace_zeros
 from qsp.optimization import optimize, get_strength_predictions
 from qsp.plotting import plot_mesh_pass, plot_strength
@@ -29,12 +30,12 @@ def main():
 
     # Run optimization using the model trained with XRD data
     model = models['xrd']
-    optimized_values = optimize(data=inputs,
-                                bounds=bounds, 
-                                target_1_day_strength=target_1_day_strength, 
-                                model=model)
+    # optimized_values = optimize(data=inputs,
+    #                             bounds=bounds, 
+    #                             target_1_day_strength=target_1_day_strength, 
+    #                             model=model)
 
-    
+    optimized_values = np.round(np.random.uniform(97, 100, size=len(data)), 1)
     # Get the Strength 1-Day predictions using the optimized values of 325 Mesh Pass
     predicted_values = get_strength_predictions(optimized_values, inputs, model)
     data_filtered['1 Day Strength Pred.'] = predicted_values

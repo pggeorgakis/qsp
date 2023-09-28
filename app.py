@@ -1,5 +1,6 @@
 import warnings
 import streamlit as st
+import numpy as np
 import pandas as pd
 from qsp.core import read_data, filter_data, load_models, select_inputs, replace_zeros
 from qsp.optimization import optimize, get_strength_predictions
@@ -19,6 +20,7 @@ st.title("Quality Target Optimization")
 # Read data and load models at the beginning
 data = read_data()
 models = load_models()
+
 # Define Source and Product Type options
 # FIXME: Check types
 source_options = {'FM3': 0, 'FM4': 1, 'FM6': 2}
@@ -32,7 +34,7 @@ st.sidebar.header("Select Options")
 
 # Select Source and Product Type
 product_type = st.sidebar.selectbox("Recipe", list(product_type_options.keys()), index=2)
-source = st.sidebar.selectbox("Sample site", list(source_options.keys()))
+source = st.sidebar.selectbox("Sample site", list(source_options.keys()), index=1)
 
 # Input for setting the target 1-day strength
 target_1_day_strength = st.sidebar.number_input("Target 1-Day Strength", value=2200)
@@ -55,40 +57,34 @@ product_type_code = product_type_options[product_type]
 # Streamlit UI
 def main():
     data_filtered = filter_data(data, source_code, product_type_code)
+    
     # Filter data by time period
     data_filtered = data_filtered[(data_filtered.index >= start_date) & (data_filtered.index <= end_date)]
 
-    data_filtered = data_filtered.iloc[0:3, :]
+    # data_filtered = data_filtered.iloc[0:3, :]
     # Select model inputs
     inputs = select_inputs(data_filtered, models['xrd'])
-
     
-    # Button to run the optimization
-    if st.sidebar.button("Run Optimization"):
-        optimized_values, predicted_values = run_optimization(inputs, target_1_day_strength)
-    
-        data_filtered['1 Day Strength Pred.'] = predicted_values
-        data_filtered['325 Mesh Pass Optimized'] = optimized_values
-        data_filtered = replace_zeros(data_filtered)
-        
-        # fig1 = plot_strength_plotly(data_filtered)
-        # st.plotly_chart(fig1)
-        
-        # fig2 = plot_mesh_pass_plotly(data_filtered)
-        # st.plotly_chart(fig2)
-        
-        fig = combined_plot(data_filtered)
-        st.plotly_chart(fig)
-        
-        # Show data table
-        st.write(inputs)
-        csv = inputs.to_csv().encode('utf-8')
+    # FIXME: Auto optimization tba
+    # if st.sidebar.button("Run Optimization"):
+    optimized_values, predicted_values = run_optimization(inputs, target_1_day_strength)
 
-        st.download_button(
-            label="Download CSV",
-            data=csv,
-            file_name='data.csv',
-            mime='text/csv')
+    data_filtered['1 Day Strength Pred.'] = predicted_values
+    data_filtered['325 Mesh Pass Optimized'] = optimized_values
+    data_filtered = replace_zeros(data_filtered)
+    
+    fig = combined_plot(data_filtered)
+    st.plotly_chart(fig)
+    
+    # Show data table
+    st.write(inputs)
+    csv = inputs.to_csv().encode('utf-8')
+
+    st.download_button(
+        label="Download CSV",
+        data=csv,
+        file_name='data.csv',
+        mime='text/csv')
     
     
 def run_optimization(inputs, target_1_day_strength):
@@ -98,13 +94,19 @@ def run_optimization(inputs, target_1_day_strength):
 
     # Run optimization using the model trained with XRD data
     model = models['xrd']
-    optimized_values = optimize(data=inputs,
-                                bounds=bounds, 
-                                target_1_day_strength=target_1_day_strength, 
-                                model=model)
+    
+    # FIXME: optimization temp disabled
+    # optimized_values = optimize(data=inputs,
+    #                             bounds=bounds, 
+    #                             target_1_day_strength=target_1_day_strength, 
+    #                             model=model)
 
+    optimized_values = np.round(np.random.uniform(97, 100, size=len(inputs)), 1)
+    
     # Get the Strength 1-Day predictions using the optimized values of 325 Mesh Pass
-    predicted_values = get_strength_predictions(optimized_values, inputs, model)
+    # FIXME: predictions temp disabled
+    # predicted_values = get_strength_predictions(optimized_values, inputs, model)
+    predicted_values = np.round(np.random.uniform(2000, 2400, size=len(inputs)), 1)
     return optimized_values, predicted_values
 
 
