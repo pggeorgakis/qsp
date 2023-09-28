@@ -64,7 +64,7 @@ def plot_strength_plotly(data):
 def combined_plot(data_filtered):
     data_filtered['Datetime'] = pd.to_datetime(data_filtered['Datetime'])
     # Create a subplot with shared x-axis
-    fig = sp.make_subplots(rows=4, cols=1, shared_xaxes=True, vertical_spacing=0.05)
+    fig = sp.make_subplots(rows=4, cols=1, shared_xaxes=True, vertical_spacing=0.07)
     
     marker_size = 8
     colors = {'325_mesh_pass': 'teal',
