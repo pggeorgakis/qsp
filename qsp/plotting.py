@@ -66,7 +66,7 @@ def combined_plot(data_filtered):
     # Create a subplot with shared x-axis
     fig = sp.make_subplots(rows=4, cols=1, shared_xaxes=True, vertical_spacing=0.07)
     
-    marker_size = 6
+    marker_size = 5
     colors = {'325_mesh_pass': 'teal',
               '1d': '#FF6347',
               '7d': '#74C69D',
@@ -125,14 +125,14 @@ def combined_plot(data_filtered):
                              name='325 Mesh Pass', 
                              mode='markers',
                              line=dict(width=1, color='red'),
-                             marker=dict(symbol='circle-open', size=8, color='gray', line=dict(width=1))),
+                             marker=dict(symbol='circle-open', size=5, color='gray', line=dict(width=1))),
                   row=4, col=1)
     fig.add_trace(go.Scatter(x=data_filtered['Datetime'], 
                              y=data_filtered['325 Mesh Pass Optimized'],
                              mode='lines+markers', 
                              name='325 Mesh Pass Target', 
                              line=dict(width=1, color=colors['325_mesh_pass']),
-                             marker=dict(symbol='circle', size=8, color=colors['325_mesh_pass'], line=dict(width=0))),
+                             marker=dict(symbol='circle', size=marker_size, color=colors['325_mesh_pass'], line=dict(width=0))),
                   row=4, col=1)
     
     # Add confidence interval
