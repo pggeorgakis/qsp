@@ -144,7 +144,7 @@ def combined_plot(data_filtered):
         x=data_filtered['Datetime'].tolist() + data_filtered['Datetime'].tolist()[::-1],
         y=data_filtered['Confidence_Upper'].tolist() + data_filtered['Confidence_Lower'].tolist()[::-1],
         fill='toself',
-        fillcolor='rgba(255, 0, 0, 0.15)',  # Adjust alpha for transparency
+        fillcolor='rgba(255, 99, 71, 0.2)',  # Adjust alpha for transparency
         line=dict(width=0),  # No line for the corridor
         name='90% Interval',
         showlegend=False
@@ -158,7 +158,7 @@ def combined_plot(data_filtered):
         x=data_filtered['Datetime'].tolist() + data_filtered['Datetime'].tolist()[::-1],
         y=data_filtered['Confidence_Upper'].tolist() + data_filtered['Confidence_Lower'].tolist()[::-1],
         fill='toself',
-        fillcolor='rgba(255, 0, 0, 0.15)',  # Adjust alpha for transparency
+        fillcolor='rgba(116, 198, 157, 0.4)',  # Adjust alpha for transparency
         line=dict(width=0),  # No line for the corridor
         name='90% Interval',
         showlegend=False),
@@ -171,7 +171,7 @@ def combined_plot(data_filtered):
         x=data_filtered['Datetime'].tolist() + data_filtered['Datetime'].tolist()[::-1],
         y=data_filtered['Confidence_Upper'].tolist() + data_filtered['Confidence_Lower'].tolist()[::-1],
         fill='toself',
-        fillcolor='rgba(255, 0, 0, 0.15)',  # Adjust alpha for transparency
+        fillcolor='rgba(255, 160, 122, 0.4)',  # Adjust alpha for transparency
         line=dict(width=0),  # No line for the corridor
         name='90% Interval',
         showlegend=False),
