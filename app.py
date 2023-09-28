@@ -70,7 +70,6 @@ def main():
 
     data_filtered['1 Day Strength Pred.'] = predicted_values
     data_filtered['325 Mesh Pass Optimized'] = optimized_values
-    data_filtered = replace_zeros(data_filtered)
     
     fig = combined_plot(data_filtered)
     st.plotly_chart(fig)

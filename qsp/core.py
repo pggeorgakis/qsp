@@ -17,6 +17,7 @@ def read_data():
     
     # Map data columns "Source", "Product Type"
     data = map_data(data)
+    data = replace_zeros(data)
     return data
     
 
@@ -76,4 +77,5 @@ def select_inputs(data, model):
 
 def replace_zeros(inputs):
     inputs['325 Mesh Pass'] = inputs['325 Mesh Pass'].replace(0, np.nan)
+    inputs['1 Day'] = inputs['1 Day'].replace(0, np.nan)
     return inputs
