@@ -189,7 +189,7 @@ def combined_plot(data_filtered):
         yaxis3=dict(title="1D (psi)"),
         width=1350,
         height=700,
-        #margin=dict(l=10, r=10, t=30, b=10),
+        margin=dict(l=10, r=10, t=20, b=10),
         #autosize=True,
         showlegend=True)
     return fig
