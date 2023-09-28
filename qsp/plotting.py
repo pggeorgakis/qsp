@@ -54,7 +54,7 @@ def plot_strength_plotly(data):
         title="Compressive Strength 1D",
         xaxis_title="Datetime",
         yaxis_title="Compressive Strength (PSI)",
-        width=1500,
+        width=1200,
         height=300,
         showlegend=True)
     return fig
@@ -72,14 +72,14 @@ def combined_plot(data_filtered):
                             mode='markers', 
                             name='1 Day Strength',
                             line=dict(width=1, color='red'),
-                            marker=dict(symbol='circle-open', size=8, color='black', line=dict(width=1.5))), 
+                            marker=dict(symbol='circle-open', size=8, color='gray', line=dict(width=2))), 
                   row=1, col=1)
     fig.add_trace(go.Scatter(x=data_filtered['Datetime'], 
                              y=data_filtered['1 Day Strength Pred.'],
                              mode='lines+markers', 
                              name='1 Day Strength Pred.',
-                             line=dict(width=1, color='red'),
-                             marker=dict(symbol='circle', size=8, color='red', line=dict(width=0))),
+                             line=dict(width=1, color='tomato'),
+                             marker=dict(symbol='circle', size=8, color='tomato', line=dict(width=0))),
                   row=1, col=1)
     
             # Add "325 Mesh Pass" traces to the first subplot
@@ -98,15 +98,20 @@ def combined_plot(data_filtered):
                              marker=dict(symbol='circle', size=8, color='teal', line=dict(width=0))),
                   row=2, col=1)
     
-    # confidence = 263.38
-    # fig.add_trace(go.Scatter(
-    # x=data_filtered['Datetime'].tolist() + data_filtered['Datetime'].tolist()[::-1],
-    # y=data_filtered['Confidence_Upper'].tolist() + data_filtered['Confidence_Lower'].tolist()[::-1],
-    # fill='toself',
-    # fillcolor='rgba(255, 0, 0, 0.2)',  # Adjust alpha for transparency
-    # line=dict(width=0),  # No line for the corridor
-    # name='Confidence Interval',
-    # showlegend=False))
+    # Calculate lower and upper bounds
+    confidence_level = 224.72
+    data_filtered['Confidence_Lower'] = data_filtered['1 Day Strength Pred.'] - confidence_level
+    data_filtered['Confidence_Upper'] = data_filtered['1 Day Strength Pred.'] + confidence_level
+
+    fig.add_trace(go.Scatter(
+        x=data_filtered['Datetime'].tolist() + data_filtered['Datetime'].tolist()[::-1],
+        y=data_filtered['Confidence_Upper'].tolist() + data_filtered['Confidence_Lower'].tolist()[::-1],
+        fill='toself',
+        fillcolor='rgba(255, 0, 0, 0.15)',  # Adjust alpha for transparency
+        line=dict(width=0),  # No line for the corridor
+        name='90% Interval',
+        showlegend=True,  # Hide from legend
+))
 
 
     # Update subplot titles and axis labels
@@ -116,8 +121,10 @@ def combined_plot(data_filtered):
                     tickformat='%B %-d'),
         yaxis1=dict(title="Compressive Strength (PSI)"),
         yaxis2=dict(title="325 Mesh Pass (%)"),
-        width=1500,
-        height=600,
+        width=1300,
+        height=500,
+        margin=dict(l=10, r=10, t=30, b=10),
+        autosize=True,
         showlegend=True)
     return fig
 
