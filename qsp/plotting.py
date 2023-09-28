@@ -66,7 +66,7 @@ def combined_plot(data_filtered):
     # Create a subplot with shared x-axis
     fig = sp.make_subplots(rows=4, cols=1, shared_xaxes=True, vertical_spacing=0.07)
     
-    marker_size = 8
+    marker_size = 6
     colors = {'325_mesh_pass': 'teal',
               '1d': '#FF6347',
               '7d': '#74C69D',
