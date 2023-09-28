@@ -97,6 +97,17 @@ def combined_plot(data_filtered):
                              line=dict(width=1, color='teal'),
                              marker=dict(symbol='circle', size=8, color='teal', line=dict(width=0))),
                   row=2, col=1)
+    
+    # confidence = 263.38
+    # fig.add_trace(go.Scatter(
+    # x=data_filtered['Datetime'].tolist() + data_filtered['Datetime'].tolist()[::-1],
+    # y=data_filtered['Confidence_Upper'].tolist() + data_filtered['Confidence_Lower'].tolist()[::-1],
+    # fill='toself',
+    # fillcolor='rgba(255, 0, 0, 0.2)',  # Adjust alpha for transparency
+    # line=dict(width=0),  # No line for the corridor
+    # name='Confidence Interval',
+    # showlegend=False))
+
 
     # Update subplot titles and axis labels
     fig.update_layout(
