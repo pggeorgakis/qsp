@@ -1,3 +1,4 @@
+import numpy as np
 from scipy.optimize import differential_evolution
 import streamlit as st
 
@@ -38,3 +39,29 @@ def get_strength_predictions(optimized_values, inputs, model):
         prediction = round(prediction, 1)
         predicted_values.append(prediction)
     return predicted_values
+
+
+def run_optimization(inputs, models, target_1_day_strength):
+
+    # Define 325 Mesh Pass bounds
+    bounds = [(97, 99)]
+
+    # Run optimization using the model trained with XRD data
+    model = models['xrd']
+    
+    # FIXME: optimization temp disabled
+    # optimized_values = optimize(data=inputs,
+    #                             bounds=bounds, 
+    #                             target_1_day_strength=target_1_day_strength, 
+    #                             model=model)
+
+    optimized_values = np.round(np.random.uniform(97, 100, size=len(inputs)), 1)
+    
+    # Get the Strength 1-Day predictions using the optimized values of 325 Mesh Pass
+    # FIXME: predictions temp disabled
+    # predicted_values = get_strength_predictions(optimized_values, inputs, model)
+    predicted_values = {}
+    predicted_values['1d'] = np.round(np.random.uniform(2000, 2400, size=len(inputs)), 1)
+    predicted_values['7d'] = np.round(np.random.uniform(5000, 5500, size=len(inputs)), 1)
+    predicted_values['28d'] = np.round(np.random.uniform(7000, 7500, size=len(inputs)), 1)
+    return optimized_values, predicted_values

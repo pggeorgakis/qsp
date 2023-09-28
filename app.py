@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from qsp.core import read_data, filter_data, load_models, select_inputs, replace_zeros
-from qsp.optimization import optimize, get_strength_predictions
+from qsp.optimization import run_optimization
 from qsp.plotting import combined_plot
 
 
@@ -20,41 +20,42 @@ st.title("Quality Target Optimization")
 data = read_data()
 models = load_models()
 
-# Define Source and Product Type options
-# FIXME: Check types
-source_options = {'FM3': 0, 'FM4': 1, 'FM6': 2}
-product_type_options = {'GU': 0, 'I/II': 1, 'CEM IL': 2, 'Masonry': 3, 'Stucco': 4}
+tab1, tab2, tab3, tab4 = st.tabs(['Analysis',
+               'Control Room',
+               'Recipe Management',
+               'Help'])
 
-# Set default start and end dates to the first and last values of the data
-default_start_date = pd.to_datetime(data.index.min())
-default_end_date = pd.to_datetime(data.index.max())
-
-st.sidebar.header("Select Options")
-
-# Select Source and Product Type
-product_type = st.sidebar.selectbox("Recipe", list(product_type_options.keys()), index=2)
-source = st.sidebar.selectbox("Sample site", list(source_options.keys()), index=1)
-
-# Input for setting the target 1-day strength
-target_1_day_strength = st.sidebar.number_input("Target 1-Day Strength", value=2200)
-
-# Create a sidebar column layout for the date pickers
-date_col1, date_col2 = st.sidebar.columns(2)
-# Date Picker for time period with default values
-with date_col1:
-    start_date = st.date_input("Start Date", default_start_date)
-    start_date = pd.to_datetime(start_date)
-
-with date_col2:
-    end_date = st.date_input("End Date", default_end_date)
-    end_date = pd.to_datetime(end_date)
+with tab1:
+    col1, col2 = st.columns([0.2, 1.4])
+    col1.write("Settings")
     
-# Filter data based on Source and Product Type
-source_code = source_options[source]
-product_type_code = product_type_options[product_type]
+    # FIXME: Check types
+    source_options = {'FM3': 0, 'FM4': 1, 'FM6': 2}
+    product_type_options = {'GU': 0, 'I/II': 1, 'CEM IL': 2, 'Masonry': 3, 'Stucco': 4}
 
-# Streamlit UI
-def main():
+    # Set default start and end dates to the first and last values of the data
+    default_start_date = pd.to_datetime(data.index.min())
+    default_end_date = pd.to_datetime(data.index.max())
+
+    # Select Source and Product Type
+    product_type = col1.selectbox("Recipe", list(product_type_options.keys()), index=2)
+    source = col1.selectbox("Sample site", list(source_options.keys()), index=1)
+
+    # Create a sidebar column layout for the date pickers
+    date_col1, date_col2 = col1.columns(2)
+    # Date Picker for time period with default values
+    with date_col1:
+        start_date = st.date_input("Start Date", default_start_date)
+        start_date = pd.to_datetime(start_date)
+
+    with date_col2:
+        end_date = st.date_input("End Date", default_end_date)
+        end_date = pd.to_datetime(end_date)
+        
+    # Filter data based on Source and Product Type
+    source_code = source_options[source]
+    product_type_code = product_type_options[product_type]
+
     data_filtered = filter_data(data, source_code, product_type_code)
     
     # Filter data by time period
@@ -66,7 +67,7 @@ def main():
     
     # FIXME: Auto optimization tba
     # if st.sidebar.button("Run Optimization"):
-    optimized_values, predicted_values = run_optimization(inputs, target_1_day_strength)
+    optimized_values, predicted_values = run_optimization(inputs, models, target_1_day_strength=2200)
     
     data_filtered['325 Mesh Pass Optimized'] = optimized_values
     data_filtered['1 Day Strength Pred.'] = predicted_values['1d']
@@ -74,7 +75,7 @@ def main():
     data_filtered['28 Day Strength Pred.'] = predicted_values['28d']
     
     fig = combined_plot(data_filtered)
-    st.plotly_chart(fig)
+    col2.plotly_chart(fig)
     
     # Show data table
     st.write(inputs)
@@ -85,33 +86,19 @@ def main():
         data=csv,
         file_name='data.csv',
         mime='text/csv')
+
+
+with tab2:
+    st.header("Under construction...")
     
     
-def run_optimization(inputs, target_1_day_strength):
-
-    # Define 325 Mesh Pass bounds
-    bounds = [(97, 99)]
-
-    # Run optimization using the model trained with XRD data
-    model = models['xrd']
+with tab3:
+    col3, col4 = st.columns([0.2, 1.4])
+    target_1_day_strength = col3.number_input("Target 1-Day Strength", value=2200)
     
-    # FIXME: optimization temp disabled
-    # optimized_values = optimize(data=inputs,
-    #                             bounds=bounds, 
-    #                             target_1_day_strength=target_1_day_strength, 
-    #                             model=model)
-
-    optimized_values = np.round(np.random.uniform(97, 100, size=len(inputs)), 1)
+    st.header("Under construction...")
     
-    # Get the Strength 1-Day predictions using the optimized values of 325 Mesh Pass
-    # FIXME: predictions temp disabled
-    # predicted_values = get_strength_predictions(optimized_values, inputs, model)
-    predicted_values = {}
-    predicted_values['1d'] = np.round(np.random.uniform(2000, 2400, size=len(inputs)), 1)
-    predicted_values['7d'] = np.round(np.random.uniform(5000, 5500, size=len(inputs)), 1)
-    predicted_values['28d'] = np.round(np.random.uniform(7000, 7500, size=len(inputs)), 1)
-    return optimized_values, predicted_values
+with tab4:
+    st.write("Under construction...")
 
 
-if __name__ == '__main__':
-    main()

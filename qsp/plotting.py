@@ -187,7 +187,7 @@ def combined_plot(data_filtered):
         yaxis1=dict(title="28D (psi)"),
         yaxis2=dict(title="7D (psi)"),
         yaxis3=dict(title="1D (psi)"),
-        width=1350,
+        width=1500,
         height=700,
         margin=dict(l=10, r=10, t=20, b=10),
         #autosize=True,
