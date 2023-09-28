@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 from qsp.core import read_data, filter_data, load_models, select_inputs, replace_zeros
 from qsp.optimization import optimize, get_strength_predictions
-from qsp.plotting import plot_mesh_pass_plotly, plot_strength_plotly, combined_plot
-
+from qsp.plotting import combined_plot
 
 
 warnings.filterwarnings("ignore", category=UserWarning)

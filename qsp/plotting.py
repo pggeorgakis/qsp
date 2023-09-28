@@ -3,6 +3,7 @@ import plotly.express as px
 import plotly.subplots as sp
 import plotly.graph_objects as go
 import pandas as pd
+import streamlit as st
 
 
 def plot_mesh_pass(data):
@@ -59,6 +60,7 @@ def plot_strength_plotly(data):
     return fig
 
 
+@st.cache_data
 def combined_plot(data_filtered):
     data_filtered['Datetime'] = pd.to_datetime(data_filtered['Datetime'])
     # Create a subplot with shared x-axis
@@ -87,3 +89,4 @@ def combined_plot(data_filtered):
         height=600,
         showlegend=True)
     return fig
+
