@@ -18,8 +18,16 @@ def read_data():
     # Map data columns "Source", "Product Type"
     data = map_data(data)
     data = replace_zeros(data)
+    data = convert_units(data)
     return data
-    
+
+
+def convert_units(data):
+    data['1 Day'] = data['1 Day']*1000
+    data['7 Day'] = data['7 Day']*1000
+    data['28 Day'] = data['28 Day']*1000
+    return data
+
 
 def map_data(data):
     mapping = {
@@ -45,9 +53,6 @@ def filter_data(data, source, product_type):
                 (data['Product Type']==product_type) &
                 (data['325 Mesh Pass Target'] !=0)]
     data = data[[c for c in data.columns if 'Pred' not in c]]
-    data['1 Day'] = data['1 Day']*1000
-    data['7 Day'] = data['7 Day']*1000
-    data['28 Day'] = data['28 Day']*1000
     return data
 
 
@@ -75,7 +80,9 @@ def select_inputs(data, model):
     return inputs
 
 
-def replace_zeros(inputs):
-    inputs['325 Mesh Pass'] = inputs['325 Mesh Pass'].replace(0, np.nan)
-    inputs['1 Day'] = inputs['1 Day'].replace(0, np.nan)
-    return inputs
+def replace_zeros(data):
+    data['325 Mesh Pass'] = data['325 Mesh Pass'].replace(0, np.nan)
+    data['1 Day'] = data['1 Day'].replace(0, np.nan)
+    data['7 Day'] = data['7 Day'].replace(0, np.nan)
+    data['28 Day'] = data['28 Day'].replace(0, np.nan)
+    return data

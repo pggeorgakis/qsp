@@ -67,9 +67,11 @@ def main():
     # FIXME: Auto optimization tba
     # if st.sidebar.button("Run Optimization"):
     optimized_values, predicted_values = run_optimization(inputs, target_1_day_strength)
-
-    data_filtered['1 Day Strength Pred.'] = predicted_values
+    
     data_filtered['325 Mesh Pass Optimized'] = optimized_values
+    data_filtered['1 Day Strength Pred.'] = predicted_values['1d']
+    data_filtered['7 Day Strength Pred.'] = predicted_values['7d']
+    data_filtered['28 Day Strength Pred.'] = predicted_values['28d']
     
     fig = combined_plot(data_filtered)
     st.plotly_chart(fig)
@@ -104,7 +106,10 @@ def run_optimization(inputs, target_1_day_strength):
     # Get the Strength 1-Day predictions using the optimized values of 325 Mesh Pass
     # FIXME: predictions temp disabled
     # predicted_values = get_strength_predictions(optimized_values, inputs, model)
-    predicted_values = np.round(np.random.uniform(2000, 2400, size=len(inputs)), 1)
+    predicted_values = {}
+    predicted_values['1d'] = np.round(np.random.uniform(2000, 2400, size=len(inputs)), 1)
+    predicted_values['7d'] = np.round(np.random.uniform(5000, 5500, size=len(inputs)), 1)
+    predicted_values['28d'] = np.round(np.random.uniform(7000, 7500, size=len(inputs)), 1)
     return optimized_values, predicted_values
 
 
