@@ -17,6 +17,8 @@ def read_data():
     
     # Map data columns "Source", "Product Type"
     data = map_data(data)
+    
+    data = replace_zeros(data)
     return data
     
 
